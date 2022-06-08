@@ -1,0 +1,15 @@
+library(lattice)
+library(flexmix)
+
+load("data_example.RData")
+
+label_model = paste0("x_",1:4)
+form = as.formula(paste("Y~",paste(label_model,collapse="+")))
+Model = FLXMRglmfix(family="poisson")
+#####Group number selection part
+Group_number_selection = stepFlexmix(form, model = Model, k = 3:5, nrep = 3, data = data_example) 
+
+######Model fitting part
+Model_fitting = flexmix(form, model = Model, k = 3, data = data_example)
+
+Model_fitting_1 = summary(refit(Model_fitting))
